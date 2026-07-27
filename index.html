@@ -1,0 +1,2222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Articull | Spontaneous Speaking & Vocabulary Practice Tool</title>
+  <meta name="description" content="Master impromptu speaking, articulate complex concepts with clarity, and eliminate filler words with structured 60-second speech challenges.">
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM & CSS VARIABLES (Premium Dark Mode & Glassmorphism)
+       ========================================================================== */
+    :root {
+      /* Color Palette - Modern Warm Rose Luxe & Baby Pink */
+      --bg-root: #140a12;
+      --bg-surface: #1c0d18;
+      --bg-card: rgba(45, 23, 38, 0.7);
+      --bg-card-hover: rgba(64, 33, 54, 0.8);
+      --bg-glass: rgba(28, 13, 24, 0.8);
+      --border-color: rgba(244, 114, 182, 0.2);
+      --border-highlight: rgba(244, 114, 182, 0.55);
+
+      /* Text Colors */
+      --text-primary: #fff1f7;
+      --text-secondary: #e8b4ce;
+      --text-muted: #a87894;
+      --text-inverse: #1a0914;
+
+      /* Accent Colors (Pink & Baby Pink) */
+      --accent-cyan: #ec4899;
+      --accent-cyan-glow: rgba(236, 72, 153, 0.35);
+      --accent-indigo: #f472b6;
+      --accent-pink: #ec4899;
+      --accent-baby-pink: #f472b6;
+      --accent-pastel-pink: #fbcfe8;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-red: #fb7185;
+      --accent-red-glow: rgba(251, 113, 133, 0.4);
+
+      /* Typography & Formatting */
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.5);
+      --shadow-glow: 0 0 25px rgba(244, 114, 182, 0.25);
+
+      /* Transitions */
+      --transition-fast: 0.15s ease;
+      --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Reset & Base Styles */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg-root);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(at 15% 15%, rgba(244, 114, 182, 0.18) 0px, transparent 50%),
+        radial-gradient(at 85% 85%, rgba(236, 72, 153, 0.15) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, rgba(251, 207, 232, 0.08) 0px, transparent 60%);
+      background-attachment: fixed;
+    }
+
+    /* Layout Wrapper */
+    .app-container {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      flex: 1;
+    }
+
+    /* ==========================================================================
+       HEADER & NAVIGATION
+       ========================================================================== */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: var(--bg-glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+
+    .brand-area {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.28), rgba(244, 114, 182, 0.12));
+      border: 1px solid rgba(244, 114, 182, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 24px rgba(236, 72, 153, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff 30%, #fbcfe8 70%, #f472b6 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      border: 1px solid transparent;
+      outline: none;
+      user-select: none;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo));
+      color: white;
+      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.35);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 20px rgba(236, 72, 153, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(30, 41, 59, 0.8);
+      color: var(--text-primary);
+      border-color: var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-highlight);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-secondary);
+      border-color: var(--border-color);
+    }
+
+    .btn-outline:hover {
+      color: var(--text-primary);
+      border-color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--accent-red);
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-danger:hover {
+      background: var(--accent-red);
+      color: white;
+    }
+
+    .btn-lg {
+      padding: 14px 28px;
+      font-size: 1.05rem;
+      border-radius: var(--radius-full);
+    }
+
+    /* ==========================================================================
+       MAIN GRID WORKSPACE
+       ========================================================================== */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 32px;
+      align-items: stretch;
+      max-width: 1080px;
+      margin: 0 auto 40px auto;
+    }
+
+    @media (max-width: 980px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Left Column: Hero Topic Display & Controls */
+    .topic-stage {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      justify-content: center;
+    }
+
+    /* Category Filter Ribbon */
+    .filter-ribbon {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--bg-card);
+      padding: 10px 18px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-color);
+      max-width: 860px;
+      margin: 0 auto 32px auto;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .chip {
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .chip:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .chip.active {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo));
+      color: white;
+      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.35);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .chip-count {
+      font-size: 0.75rem;
+      opacity: 0.85;
+      margin-left: 6px;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+    }
+
+    /* Hero Topic Card (Centered Prompt Studio) */
+    .hero-topic-card {
+      position: relative;
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      border-radius: 28px;
+      padding: 44px 40px;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      overflow: hidden;
+      transition: all var(--transition-normal);
+    }
+
+    .hero-topic-card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at center, rgba(244, 114, 182, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-topic-card:hover {
+      border-color: var(--border-highlight);
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    }
+
+    .card-top-meta {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .category-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.18), rgba(244, 114, 182, 0.22));
+      color: #f472b6;
+      border: 1px solid rgba(244, 114, 182, 0.4);
+      box-shadow: 0 0 15px rgba(244, 114, 182, 0.2);
+    }
+
+    .topic-number-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .topic-content-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin: 32px 0;
+      position: relative;
+      z-index: 2;
+      width: 100%;
+    }
+
+    .topic-title {
+      font-size: clamp(2.4rem, 4.2vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.04em;
+      text-align: center;
+      color: var(--text-primary);
+      background: linear-gradient(135deg, #ffffff 20%, #fbcfe8 60%, #f472b6 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      word-break: break-word;
+      max-width: 95%;
+      margin: 0 auto;
+    }
+
+    .topic-prompt {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      max-width: 580px;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    /* Card Action Bar (Draw Next + Auto-Start) */
+    .card-action-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      width: 100%;
+      padding-top: 28px;
+      border-top: 1px solid rgba(148, 163, 184, 0.12);
+      position: relative;
+      z-index: 2;
+    }
+
+    .auto-start-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .switch-checkbox {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      appearance: none;
+      background-color: var(--text-muted);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: background-color var(--transition-fast);
+      outline: none;
+    }
+
+    .switch-checkbox::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 18px;
+      height: 18px;
+      background-color: white;
+      border-radius: 50%;
+      transition: transform var(--transition-normal);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    .switch-checkbox:checked {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo));
+    }
+
+    .switch-checkbox:checked::after {
+      transform: translateX(20px);
+    }
+
+    /* ==========================================================================
+       RIGHT COLUMN: TIMER & RECORDER WORKSPACE
+       ========================================================================== */
+    .sidebar-tools {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Timer Widget Card (Centered Command Studio) */
+    .timer-card {
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      border-radius: 28px;
+      padding: 38px 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      position: relative;
+      overflow: hidden;
+      min-height: 100%;
+    }
+
+    .timer-card::after {
+      content: '';
+      position: absolute;
+      top: -40%;
+      left: -40%;
+      width: 180%;
+      height: 180%;
+      background: radial-gradient(circle at center, rgba(236, 72, 153, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Pulsing Warning State */
+    .timer-card.timer-warning {
+      border-color: var(--accent-red);
+      box-shadow: 0 0 35px var(--accent-red-glow);
+      animation: pulseWarning 1s infinite alternate;
+    }
+
+    @keyframes pulseWarning {
+      from { box-shadow: 0 0 20px var(--accent-red-glow); }
+      to { box-shadow: 0 0 45px rgba(239, 68, 68, 0.6); }
+    }
+
+    .timer-ring-wrapper {
+      position: relative;
+      width: 240px;
+      height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+      filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.4));
+      z-index: 2;
+    }
+
+    .timer-svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .timer-track {
+      fill: none;
+      stroke: rgba(148, 163, 184, 0.15);
+      stroke-width: 12;
+    }
+
+    .timer-progress {
+      fill: none;
+      stroke: url(#timerGradient);
+      stroke-width: 12;
+      stroke-linecap: round;
+      stroke-dasharray: 628;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 0.1s linear, stroke 0.3s ease;
+    }
+
+    .timer-display {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .timer-digits {
+      font-size: 3.6rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+      color: var(--text-primary);
+      letter-spacing: -0.05em;
+      text-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .timer-status-label {
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent-baby-pink);
+      margin-top: 10px;
+      opacity: 0.95;
+    }
+
+    .timer-controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      max-width: 320px;
+      z-index: 2;
+    }
+
+    .timer-controls .btn {
+      flex: 1;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: var(--radius-full);
+    }
+
+    /* Audio Recorder Card */
+    .recorder-card {
+      background: var(--bg-glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .recorder-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .recorder-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .record-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent-red);
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+    }
+
+    .record-indicator.active {
+      opacity: 1;
+    }
+
+    .red-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--accent-red);
+      box-shadow: 0 0 10px var(--accent-red);
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .recorder-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .audio-player-wrapper {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .native-audio-player {
+      width: 100%;
+      height: 36px;
+      outline: none;
+    }
+
+    .recorder-alert {
+      font-size: 0.82rem;
+      color: var(--accent-amber);
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      display: none;
+    }
+
+    /* ==========================================================================
+       BOTTOM PANELS: SPEECH STRUCTURES & SESSION HISTORY
+       ========================================================================== */
+    .bottom-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    @media (max-width: 950px) {
+      .bottom-section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .section-card {
+      background: var(--bg-glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Speech Structure Tabs & Cards */
+    .framework-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .framework-tab {
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: rgba(30, 41, 59, 0.5);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+      transition: all var(--transition-fast);
+    }
+
+    .framework-tab.active {
+      background: rgba(236, 72, 153, 0.18);
+      color: var(--accent-baby-pink);
+      border-color: rgba(244, 114, 182, 0.45);
+      box-shadow: 0 0 15px rgba(236, 72, 153, 0.2);
+    }
+
+    .framework-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .framework-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(148, 163, 184, 0.08);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      transition: transform var(--transition-fast);
+    }
+
+    .framework-step:hover {
+      transform: translateX(4px);
+      border-color: rgba(148, 163, 184, 0.2);
+    }
+
+    .step-number {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo));
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .step-content h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+    }
+
+    .step-content p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Session History List */
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(148, 163, 184, 0.08);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .history-item:hover {
+      background: rgba(45, 23, 38, 0.7);
+      border-color: rgba(244, 114, 182, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .history-main {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .history-title {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .history-category {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .history-tag {
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       CUSTOM TOPICS MODAL
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition-normal);
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 650px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: translateY(20px);
+      transition: transform var(--transition-normal);
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px;
+    }
+
+    .close-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .modal-body {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .form-help {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .textarea-custom {
+      width: 100%;
+      min-height: 150px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      color: var(--text-primary);
+      font-family: var(--font-family);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      resize: vertical;
+      outline: none;
+      transition: border-color var(--transition-fast);
+    }
+
+    .textarea-custom:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 12px rgba(236, 72, 153, 0.25);
+    }
+
+    .import-mode-toggle {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.5);
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(148, 163, 184, 0.1);
+    }
+
+    .radio-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .radio-label input[type="radio"] {
+      accent-color: var(--accent-cyan);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .custom-topics-list-section {
+      border-top: 1px solid rgba(148, 163, 184, 0.12);
+      padding-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .custom-list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .custom-topics-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-height: 160px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .custom-topic-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(244, 114, 182, 0.18);
+      color: #fbcfe8;
+      border: 1px solid rgba(244, 114, 182, 0.35);
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .remove-pill-btn {
+      background: transparent;
+      border: none;
+      color: #fbcfe8;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .remove-pill-btn:hover {
+      color: var(--accent-red);
+    }
+
+    /* Footer */
+    .app-footer {
+      text-align: center;
+      padding: 20px 0;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       SVG GRADIENTS FOR progress ring
+       ========================================================================== -->
+  <svg style="width: 0; height: 0; position: absolute;" aria-hidden="true">
+    <defs>
+      <linearGradient id="timerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ec4899" />
+        <stop offset="100%" stop-color="#f472b6" />
+      </linearGradient>
+      <linearGradient id="timerWarningGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ef4444" />
+        <stop offset="100%" stop-color="#f97316" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="app-container">
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="brand-area">
+        <div class="brand-logo" aria-label="Articull Logo">
+          <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="articullLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff" />
+                <stop offset="45%" stop-color="#fbcfe8" />
+                <stop offset="100%" stop-color="#ec4899" />
+              </linearGradient>
+              <linearGradient id="articullWaveGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+                <stop offset="0%" stop-color="#ec4899" />
+                <stop offset="100%" stop-color="#ffffff" />
+              </linearGradient>
+              <filter id="logoGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="1.5" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+            </defs>
+            
+            <!-- Outer Geometric Soundwave 'A' Monogram with crisp cutout -->
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M18 3L5 30H10.5L14 22H22L25.5 30H31L18 3ZM15.5 18L18 11.5L20.5 18H15.5Z" fill="url(#articullLogoGrad)" filter="url(#logoGlow)" />
+            
+            <!-- Acoustic Articulation Wave Pillars inside crossbar area -->
+            <rect x="13.5" y="20.5" width="2.2" height="6.5" rx="1.1" fill="url(#articullWaveGrad)" />
+            <rect x="17" y="17.5" width="2.2" height="9.5" rx="1.1" fill="#fff" />
+            <rect x="20.5" y="20.5" width="2.2" height="6.5" rx="1.1" fill="url(#articullWaveGrad)" />
+            
+            <!-- Luminous Clarity Sparkle -->
+            <path d="M28.5 5C28.5 5 29.8 7.5 32 8C29.8 8.5 28.5 11 28.5 11C28.5 11 27.2 8.5 25 8C27.2 7.5 28.5 5 28.5 5Z" fill="#fbcfe8" />
+            <circle cx="9.5" cy="8.5" r="1.5" fill="#f472b6" opacity="0.85" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">Articull</h1>
+          <div class="brand-subtitle">Spontaneous Speaking & Vocabulary Coach</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-outline" id="openCustomModalBtn" type="button">
+          <span>+ Manage Custom Topics</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- CATEGORY FILTER RIBBON (CENTERED TOP NAV) -->
+    <nav class="filter-ribbon" id="categoryRibbon" aria-label="Topic Category Filter">
+      <button class="chip active" data-category="all" type="button">
+        All Categories <span class="chip-count" id="countAll">60</span>
+      </button>
+      <button class="chip" data-category="abstract" type="button">
+        Everyday & Abstract <span class="chip-count" id="countAbstract">15</span>
+      </button>
+      <button class="chip" data-category="psychology" type="button">
+        Mental Models <span class="chip-count" id="countPsychology">15</span>
+      </button>
+      <button class="chip" data-category="business" type="button">
+        Business & Strategy <span class="chip-count" id="countBusiness">15</span>
+      </button>
+      <button class="chip" data-category="philosophy" type="button">
+        Philosophy <span class="chip-count" id="countPhilosophy">15</span>
+      </button>
+      <button class="chip" data-category="custom" id="customFilterChip" type="button" style="display: none;">
+        Custom Topics <span class="chip-count" id="countCustom">0</span>
+      </button>
+    </nav>
+
+    <!-- MAIN GRID: CENTERED WORD GENERATOR & TIMER STUDIO -->
+    <main class="main-grid">
+      <!-- LEFT WORKSPACE: TOPIC DISPLAY -->
+      <section class="topic-stage">
+        <!-- Hero Topic Card -->
+        <article class="hero-topic-card" id="heroCard">
+          <div class="card-top-meta">
+            <span class="category-badge" id="topicCategoryBadge">Everyday & Abstract Concepts</span>
+            <span class="topic-number-label" id="topicIndexLabel">Topic #1 of 60</span>
+          </div>
+
+          <div class="topic-content-area">
+            <h2 class="topic-title" id="topicTitleDisplay">Resilience</h2>
+            <p class="topic-prompt" id="topicPromptDisplay">
+              The capacity to recover quickly from difficulties, setbacks, and unexpected shock; psychological and emotional elasticity.
+            </p>
+          </div>
+
+          <div class="card-action-bar">
+            <button class="btn btn-primary btn-lg" id="generateTopicBtn" type="button">
+              <span>↻ Generate Next Topic</span>
+            </button>
+            <label class="auto-start-toggle" for="autoStartSwitch">
+              <input type="checkbox" id="autoStartSwitch" class="switch-checkbox">
+              <span>Auto-Start 60s Timer</span>
+            </label>
+          </div>
+        </article>
+      </section>
+
+      <!-- RIGHT WORKSPACE: TIMER & AUDIO RECORDER -->
+      <aside class="sidebar-tools">
+        <!-- Timer Card -->
+        <div class="timer-card" id="timerCard">
+          <div class="timer-ring-wrapper">
+            <svg class="timer-svg" viewBox="0 0 220 220">
+              <circle class="timer-track" cx="110" cy="110" r="100"></circle>
+              <circle class="timer-progress" id="timerProgressCircle" cx="110" cy="110" r="100"></circle>
+            </svg>
+            <div class="timer-display">
+              <div class="timer-digits" id="timerDigits">01:00</div>
+              <div class="timer-status-label" id="timerStatusLabel">READY</div>
+            </div>
+          </div>
+
+          <div class="timer-controls">
+            <button class="btn btn-primary" id="startTimerBtn" type="button">Start</button>
+            <button class="btn btn-secondary" id="pauseTimerBtn" type="button" disabled>Pause</button>
+            <button class="btn btn-secondary" id="resetTimerBtn" type="button">Reset</button>
+          </div>
+        </div>
+
+        <!-- Audio Recorder Card -->
+        <div class="recorder-card">
+          <div class="recorder-header">
+            <div class="recorder-title">
+              <span>🎙️ Self-Review Recorder</span>
+            </div>
+            <div class="record-indicator" id="recordIndicator">
+              <span class="red-dot"></span>
+              <span id="recordTimerLabel">REC 00:00</span>
+            </div>
+          </div>
+
+          <div class="recorder-actions">
+            <button class="btn btn-secondary" id="toggleRecordBtn" type="button" style="flex: 1;">
+              <span>● Start Recording</span>
+            </button>
+          </div>
+
+          <div class="audio-player-wrapper" id="audioPlayerWrapper" style="display: none;">
+            <audio id="nativeAudioPlayer" class="native-audio-player" controls></audio>
+            <a class="btn btn-outline" id="downloadAudioBtn" download="articull_practice.webm" style="text-decoration: none; font-size: 0.8rem;">
+              <span>↓ Download Speech Audio</span>
+            </a>
+          </div>
+
+          <div class="recorder-alert" id="recorderAlertBox"></div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- BOTTOM WORKSPACE: SPEECH STRUCTURES & HISTORY -->
+    <section class="bottom-section">
+      <!-- Speech Structure Frameworks -->
+      <div class="section-card">
+        <div class="section-header">
+          <h3 class="section-title"><span>📐 Speech Structure Frameworks</span></h3>
+        </div>
+        <div class="framework-tabs" id="frameworkTabs">
+          <button class="framework-tab active" data-framework="0" type="button">PREP Model</button>
+          <button class="framework-tab" data-framework="1" type="button">Hook → Point → Reason</button>
+          <button class="framework-tab" data-framework="2" type="button">Past → Present → Future</button>
+          <button class="framework-tab" data-framework="3" type="button">Problem → Solution</button>
+        </div>
+        <div class="framework-steps" id="frameworkStepsContainer">
+          <!-- Dynamically filled by JS -->
+        </div>
+      </div>
+
+      <!-- Session History -->
+      <div class="section-card">
+        <div class="section-header">
+          <h3 class="section-title"><span>🕒 Session Practice History (Last 5)</span></h3>
+        </div>
+        <div class="history-list" id="historyListContainer">
+          <!-- Dynamically filled by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      Articull &copy; 2026 &mdash; Built with 100% Vanilla ES6+ &amp; Web Audio API &bull; Works fully offline
+    </footer>
+  </div>
+
+  <!-- ==========================================================================
+       CUSTOM TOPICS MODAL DIALOG
+       ========================================================================== -->
+  <div class="modal-overlay" id="customTopicsModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Manage Custom Practice Topics</h3>
+        <button class="close-btn" id="closeCustomModalBtn" type="button" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="customTopicInput">Paste Topics (Comma-separated, Line-separated, or CSV)</label>
+          <span class="form-help">Example: "Serendipity - Finding happy accidents, Resilience, First-Principles Thinking"</span>
+          <textarea class="textarea-custom" id="customTopicInput" placeholder="Enter your words, concepts, or interview questions here..."></textarea>
+        </div>
+
+        <div class="import-mode-toggle">
+          <span class="form-label" style="margin-right: 8px;">Import Mode:</span>
+          <label class="radio-label">
+            <input type="radio" name="importMode" value="append" checked> Append to Custom List
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="importMode" value="replace"> Replace Custom List
+          </label>
+        </div>
+
+        <div style="display: flex; gap: 12px;">
+          <button class="btn btn-primary" id="saveCustomTopicsBtn" type="button" style="flex: 1;">
+            Save &amp; Import Topics
+          </button>
+          <button class="btn btn-secondary" id="clearInputBtn" type="button">
+            Clear Box
+          </button>
+        </div>
+
+        <div class="custom-topics-list-section">
+          <div class="custom-list-header">
+            <span class="form-label">Saved Custom Topics (<span id="savedCustomCountModal">0</span>)</span>
+            <button class="btn btn-danger" id="removeAllCustomBtn" type="button" style="padding: 6px 12px; font-size: 0.8rem;">
+              Clear All Custom
+            </button>
+          </div>
+          <div class="custom-topics-badges" id="customTopicsBadgesContainer">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       VANILLA JAVASCRIPT LOGIC
+       ========================================================================== -->
+  <script>
+    /* ==========================================================================
+       1. TOPIC DATABASE (EXACTLY 60 BUILT-IN TOPICS across 4 categories)
+       ========================================================================== */
+    const DEFAULT_TOPICS = [
+      // CATEGORY 1: Everyday & Abstract Concepts (15 topics)
+      { id: "abs_1", categoryId: "abstract", category: "Everyday & Abstract Concepts", title: "Resilience", prompt: "The capacity to recover quickly from difficulties, setbacks, and unexpected shock; psychological and emotional elasticity." },
+      { id: "abs_2", categoryId: "abstract", category: "Everyday & Abstract Concepts", title: "Ephemeral", prompt: "Lasting for a very short time; the transient nature of moments, emotions, and technological cycles." },
+      { id: "abs_3", categoryId: "abstract", category: "Everyday & Abstract Concepts", title: "Friction", prompt: "Resistance encountered when interacting with systems, organizations, or habits, and how reducing it unlocks speed." },
+      { id: "abs_4", categoryId: "abstract", category: "Everyday & Abstract Concepts", title: "Serendipity", prompt: "The occurrence of events by chance in a happy or beneficial way; cultivating an environment ready for luck." },
+      { id: "abs_5", categoryId: "abstract", category: "Everyday & Abstract Concepts", title: "Ambiguity", prompt: "The quality of being open to more than one interpretation; leading and acting decisively when information is incomplete." },
+      { id: "abs_6", categoryId: "abstract", category: "Everyday & Abstract Concepts", title: "Catalyst", prompt: "An event, idea, or person that precipitates significant transformation without being consumed by it." },
+      { id: "abs_7", categoryId: "abstract", category: "Everyday & Abstract Concepts", title: "Inertia", prompt: "The tendency of systems and minds to remain unchanged or follow an established trajectory without external intervention." },
+      { id: "abs_8", categoryId: "abstract", category: "Everyday & Abstract Concepts", title: "Synergy", prompt: "The interaction of elements that when combined produce a total effect greater than the sum of their individual contributions." },
+      { id: "abs_9", categoryId: "abstract", category: "Everyday & Abstract Concepts", title: "Equilibrium", prompt: "A dynamic state of balance between opposing forces, priorities, or work and personal well-being." },
+      { id: "abs_10", categoryId: "abstract", category: "Everyday & Abstract Concepts", title: "Paradigm", prompt: "A world-view, mental model, or standard example that dictates how we perceive problems and solutions." },
+      { id: "abs_11", categoryId: "abstract", category: "Everyday & Abstract Concepts", title: "Vulnerability", prompt: "Emotional openness and the willingness to face uncertainty and risk as the birthplace of innovation and trust." },
+      { id: "abs_12", categoryId: "abstract", category: "Everyday & Abstract Concepts", title: "Autonomy", prompt: "Self-governance and freedom from external control; why intrinsic motivation thrives on independence." },
+      { id: "abs_13", categoryId: "abstract", category: "Everyday & Abstract Concepts", title: "Dissonance", prompt: "A tension or clash resulting from disharmony between beliefs, values, and observed realities." },
+      { id: "abs_14", categoryId: "abstract", category: "Everyday & Abstract Concepts", title: "Pragmatism", prompt: "An approach that evaluates theories, strategies, and beliefs in terms of practical consequences and real-world application." },
+      { id: "abs_15", categoryId: "abstract", category: "Everyday & Abstract Concepts", title: "Synthesis", prompt: "The art of combining disparate ideas, data points, and disciplines into a coherent, novel framework." },
+
+      // CATEGORY 2: Mental Models & Psychology (15 topics)
+      { id: "psy_1", categoryId: "psychology", category: "Mental Models & Psychology", title: "Anchoring Bias", prompt: "Relying too heavily on the first piece of information offered when making decisions, negotiations, or estimates." },
+      { id: "psy_2", categoryId: "psychology", category: "Mental Models & Psychology", title: "Fundamental Attribution Error", prompt: "Attributing others' actions to internal character flaws while attributing our own failures to external circumstances." },
+      { id: "psy_3", categoryId: "psychology", category: "Mental Models & Psychology", title: "Sunk Cost Fallacy", prompt: "Continuing a doomed endeavor because of previously invested time, money, or effort rather than current forward value." },
+      { id: "psy_4", categoryId: "psychology", category: "Mental Models & Psychology", title: "First-Principles Thinking", prompt: "Breaking complex problems down to basic, fundamental truths and reasoning upward from scratch rather than by analogy." },
+      { id: "psy_5", categoryId: "psychology", category: "Mental Models & Psychology", title: "Dunning-Kruger Effect", prompt: "A cognitive bias where individuals with limited competence overestimate their ability, while experts underestimate theirs." },
+      { id: "psy_6", categoryId: "psychology", category: "Mental Models & Psychology", title: "Confirmation Bias", prompt: "The tendency to search for, interpret, and recall information in a way that confirms existing preconceptions." },
+      { id: "psy_7", categoryId: "psychology", category: "Mental Models & Psychology", title: "Hanlon's Razor", prompt: "Never attribute to malice that which is adequately explained by carelessness, misunderstanding, or lack of skill." },
+      { id: "psy_8", categoryId: "psychology", category: "Mental Models & Psychology", title: "Availability Heuristic", prompt: "Estimating the likelihood of events based on their availability in memory rather than objective statistical frequency." },
+      { id: "psy_9", categoryId: "psychology", category: "Mental Models & Psychology", title: "Second-Order Thinking", prompt: "Looking beyond immediate consequences to ask: 'And then what happens next?' over long-term time horizons." },
+      { id: "psy_10", categoryId: "psychology", category: "Mental Models & Psychology", title: "Inversion", prompt: "Approaching problems backward: instead of asking how to succeed, asking how to guarantee failure and avoiding those steps." },
+      { id: "psy_11", categoryId: "psychology", category: "Mental Models & Psychology", title: "Circle of Competence", prompt: "Knowing the boundary between what you genuinely understand and where your knowledge becomes guesswork." },
+      { id: "psy_12", categoryId: "psychology", category: "Mental Models & Psychology", title: "Hedonic Treadmill", prompt: "The human tendency to return to a relatively stable baseline of happiness despite positive or negative life changes." },
+      { id: "psy_13", categoryId: "psychology", category: "Mental Models & Psychology", title: "Map is Not the Territory", prompt: "An abstraction or model of reality is not reality itself; recognizing where simplifications fail in practice." },
+      { id: "psy_14", categoryId: "psychology", category: "Mental Models & Psychology", title: "Cognitive Load", prompt: "The total amount of mental processing effort required during tasks, and how simplifying design improves decisions." },
+      { id: "psy_15", categoryId: "psychology", category: "Mental Models & Psychology", title: "Survivorship Bias", prompt: "Concentrating on successful outcomes and people while overlooking the invisible failures that used the same tactics." },
+
+      // CATEGORY 3: Business, Strategy & Tech (15 topics)
+      { id: "bus_1", categoryId: "business", category: "Business, Strategy & Tech", title: "Network Effects", prompt: "A phenomenon where a product or ecosystem becomes exponentially more valuable as the number of users increases." },
+      { id: "bus_2", categoryId: "business", category: "Business, Strategy & Tech", title: "Opportunity Cost", prompt: "The invisible benefits and alternatives sacrificed when committing capital, time, or focus to a specific path." },
+      { id: "bus_3", categoryId: "business", category: "Business, Strategy & Tech", title: "Technical Debt", prompt: "The accumulated cost of taking shortcuts in design or code today that must be refactored with interest tomorrow." },
+      { id: "bus_4", categoryId: "business", category: "Business, Strategy & Tech", title: "Asymmetric Risk", prompt: "A situation where the potential upside of an experiment or decision is vastly greater than the bounded downside." },
+      { id: "bus_5", categoryId: "business", category: "Business, Strategy & Tech", title: "Flywheel Effect", prompt: "Self-reinforcing momentum where each improvement compounds velocity, making growth easier over time." },
+      { id: "bus_6", categoryId: "business", category: "Business, Strategy & Tech", title: "Zero-Sum Game", prompt: "A competitive dynamic where one participant's gain is strictly balanced by another's loss, versus positive-sum creation." },
+      { id: "bus_7", categoryId: "business", category: "Business, Strategy & Tech", title: "Creative Destruction", prompt: "The dismantling of long-standing practices, products, or incumbents to make way for radical innovation." },
+      { id: "bus_8", categoryId: "business", category: "Business, Strategy & Tech", title: "Economies of Scale", prompt: "Cost advantages reaped by organizations when volume expands and fixed costs are spread over more units." },
+      { id: "bus_9", categoryId: "business", category: "Business, Strategy & Tech", title: "Innovator's Dilemma", prompt: "Why successful, well-managed companies fail to catch disruptive waves by listening only to existing profitable customers." },
+      { id: "bus_10", categoryId: "business", category: "Business, Strategy & Tech", title: "Regulatory Capture", prompt: "When an oversight agency ends up advancing the commercial concerns of the very industry it was created to regulate." },
+      { id: "bus_11", categoryId: "business", category: "Business, Strategy & Tech", title: "Agility vs. Stability", prompt: "The organizational balancing act between rapid experimentation and uncompromising system reliability." },
+      { id: "bus_12", categoryId: "business", category: "Business, Strategy & Tech", title: "Chasm Crossing", prompt: "The gap between visionary early adopters and pragmatic mainstream buyers in technology adoption." },
+      { id: "bus_13", categoryId: "business", category: "Business, Strategy & Tech", title: "Optionality", prompt: "Maintaining diverse, low-cost strategic options to capitalize on unexpected future volatility and opportunities." },
+      { id: "bus_14", categoryId: "business", category: "Business, Strategy & Tech", title: "Scalability", prompt: "The capability of a system, team, or architecture to handle multiplying workloads without linear cost increases." },
+      { id: "bus_15", categoryId: "business", category: "Business, Strategy & Tech", title: "Pareto Principle", prompt: "The 80/20 rule: roughly 80% of consequences, results, or revenue flow from 20% of causes or inputs." },
+
+      // CATEGORY 4: Philosophy & Communication (15 topics)
+      { id: "phi_1", categoryId: "philosophy", category: "Philosophy & Communication", title: "Stoicism", prompt: "Focusing strictly on what is within our control while maintaining inner tranquility amidst external chaos." },
+      { id: "phi_2", categoryId: "philosophy", category: "Philosophy & Communication", title: "Occam's Razor", prompt: "When presented with competing hypotheses, the explanation requiring the fewest assumptions is most likely correct." },
+      { id: "phi_3", categoryId: "philosophy", category: "Philosophy & Communication", title: "Plato's Cave", prompt: "The distinction between surface-level shadows of perception and the deeper truths of reality." },
+      { id: "phi_4", categoryId: "philosophy", category: "Philosophy & Communication", title: "Emotional Intelligence", prompt: "The capacity to perceive, regulate, and express emotions thoughtfully while navigating interpersonal relationships." },
+      { id: "phi_5", categoryId: "philosophy", category: "Philosophy & Communication", title: "Socratic Method", prompt: "A cooperative argumentative dialogue based on asking probing questions to stimulate critical thinking and expose assumptions." },
+      { id: "phi_6", categoryId: "philosophy", category: "Philosophy & Communication", title: "Nihilism vs. Existentialism", prompt: "The contrast between believing existence has no intrinsic meaning and taking responsibility to author your own purpose." },
+      { id: "phi_7", categoryId: "philosophy", category: "Philosophy & Communication", title: "Steelmanning", prompt: "Constructing the strongest, most charitable version of an opponent's argument before critiquing it." },
+      { id: "phi_8", categoryId: "philosophy", category: "Philosophy & Communication", title: "Active Listening", prompt: "Fully concentrating, understanding, responding, and remembering rather than passively waiting for your turn to speak." },
+      { id: "phi_9", categoryId: "philosophy", category: "Philosophy & Communication", title: "Logos, Ethos, Pathos", prompt: "Aristotle's triad of persuasion: appealing to reasoned logic, speaker credibility, and audience emotion." },
+      { id: "phi_10", categoryId: "philosophy", category: "Philosophy & Communication", title: "Non-Violent Communication", prompt: "Expressing observations, feelings, needs, and clear requests without moralistic judgment or blame." },
+      { id: "phi_11", categoryId: "philosophy", category: "Philosophy & Communication", title: "Categorical Imperative", prompt: "Kant's moral principle to act only according to rules you would want universalized for all people." },
+      { id: "phi_12", categoryId: "philosophy", category: "Philosophy & Communication", title: "The Ship of Theseus", prompt: "A philosophical paradox on identity: does an object remain fundamentally the same if all its components are replaced over time?" },
+      { id: "phi_13", categoryId: "philosophy", category: "Philosophy & Communication", title: "Radical Candor", prompt: "Caring personally while challenging directly—delivering honest feedback without aggressive cruelty or ruinous empathy." },
+      { id: "phi_14", categoryId: "philosophy", category: "Philosophy & Communication", title: "High vs. Low Context", prompt: "How communication cultures vary between implicit unspoken cues and explicit verbal precision." },
+      { id: "phi_15", categoryId: "philosophy", category: "Philosophy & Communication", title: "Rhetorical Framing", prompt: "How the structure and emphasis of a message shapes perception, priorities, and decision-making." }
+    ];
+
+    /* ==========================================================================
+       2. SPEECH STRUCTURE FRAMEWORKS DATA
+       ========================================================================== */
+    const FRAMEWORKS_DATA = [
+      {
+        name: "PREP Model (Persuasion & Executive Summary)",
+        steps: [
+          { title: "Point", desc: "State your main thesis or core conclusion in a single crisp sentence right at the top." },
+          { title: "Reason", desc: "Explain the 'Why' behind your point. What principle, data, or logic supports it?" },
+          { title: "Example", desc: "Provide a vivid real-world example, story, or concrete metric that illustrates your reason." },
+          { title: "Point", desc: "Re-state your opening thesis clearly as a memorable call-to-action or summary takeaway." }
+        ]
+      },
+      {
+        name: "Hook → Point → Reason → Example → Conclusion",
+        steps: [
+          { title: "Hook", desc: "Grab immediate attention with a startling observation, paradox, or thought-provoking question." },
+          { title: "Point", desc: "Introduce the core concept you are addressing and why it matters right now." },
+          { title: "Reason", desc: "Analyze the underlying mechanics or psychological forces at play." },
+          { title: "Example", desc: "Anchor the concept with an empirical case study or personal experience." },
+          { title: "Conclusion", desc: "End with a forward-looking synthesis or practical application." }
+        ]
+      },
+      {
+        name: "Past → Present → Future (Evolutionary Framework)",
+        steps: [
+          { title: "Past", desc: "How did we historically handle or understand this topic? What was the old paradigm?" },
+          { title: "Present", desc: "What is the current state, conflict, or inflection point we are experiencing today?" },
+          { title: "Future", desc: "Where is this heading over the next 5–10 years, and how should we prepare?" }
+        ]
+      },
+      {
+        name: "Problem → Cause → Solution → Benefit",
+        steps: [
+          { title: "Problem", desc: "Identify the critical bottleneck, pain point, or misunderstanding." },
+          { title: "Cause", desc: "Diagnose the root cause—why has this problem persisted?" },
+          { title: "Solution", desc: "Propose a clear, actionable intervention or mental model shift." },
+          { title: "Benefit", desc: "Detail the specific positive outcomes and asymmetric upside of adopting this solution." }
+        ]
+      }
+    ];
+
+    /* ==========================================================================
+       3. STATE MANAGEMENT ARCHITECTURE
+       ========================================================================== */
+    const appState = {
+      currentCategory: "all",
+      currentTopic: null,
+      customTopics: [],
+      history: [],
+      timer: {
+        durationMs: 60000,
+        remainingMs: 60000,
+        isRunning: false,
+        isPaused: false,
+        autoStart: false,
+        startTimestamp: null,
+        pausedRemainingMs: 60000,
+        rafId: null
+      },
+      recorder: {
+        mediaRecorder: null,
+        audioChunks: [],
+        audioBlob: null,
+        audioUrl: null,
+        isRecording: false,
+        recordStartTimestamp: null,
+        recordIntervalId: null,
+        stream: null
+      },
+      activeFrameworkIndex: 0
+    };
+
+    /* ==========================================================================
+       4. WEB AUDIO API SOUND GENERATOR (COMPLETION TONE)
+       ========================================================================== */
+    function playCompletionTone() {
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+
+        const ctx = new AudioContextClass();
+
+        // Helper function to play a single chime note
+        const playNote = (freq, startTime, duration) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + startTime);
+
+          // Envelope for smooth chime attack and decay
+          gain.gain.setValueAtTime(0, ctx.currentTime + startTime);
+          gain.gain.linearRampToValueAtTime(0.25, ctx.currentTime + startTime + 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + startTime + duration);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.start(ctx.currentTime + startTime);
+          osc.stop(ctx.currentTime + startTime + duration);
+        };
+
+        // Play an elegant two-tone pleasant alert chord/chime (D5 -> A5 -> D6 harmonic)
+        playNote(587.33, 0.0, 0.45);   // D5
+        playNote(880.00, 0.15, 0.6);   // A5
+        playNote(1174.66, 0.3, 0.85);  // D6
+
+      } catch (err) {
+        console.warn("Web Audio API chime could not be played:", err);
+      }
+    }
+
+    /* ==========================================================================
+       5. HIGH-PRECISION TIMER LOGIC (STAGE 3)
+       ========================================================================== */
+    const timerProgressCircle = document.getElementById('timerProgressCircle');
+    const timerDigits = document.getElementById('timerDigits');
+    const timerStatusLabel = document.getElementById('timerStatusLabel');
+    const timerCard = document.getElementById('timerCard');
+    const startTimerBtn = document.getElementById('startTimerBtn');
+    const pauseTimerBtn = document.getElementById('pauseTimerBtn');
+    const resetTimerBtn = document.getElementById('resetTimerBtn');
+
+    // Total circumference of SVG circle r=100 is 2 * Math.PI * 100 ≈ 628.32
+    const CIRCLE_CIRCUMFERENCE = 628.31853;
+    timerProgressCircle.style.strokeDasharray = `${CIRCLE_CIRCUMFERENCE} ${CIRCLE_CIRCUMFERENCE}`;
+
+    function updateTimerUI(remainingMs) {
+      // Ensure remaining is between 0 and duration
+      const clampedMs = Math.max(0, Math.min(appState.timer.durationMs, remainingMs));
+      const totalSec = Math.ceil(clampedMs / 1000);
+      const mins = Math.floor(totalSec / 60);
+      const secs = totalSec % 60;
+
+      timerDigits.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+      // Calculate progress percentage and offset
+      const progressRatio = clampedMs / appState.timer.durationMs;
+      const dashoffset = CIRCLE_CIRCUMFERENCE * (1 - progressRatio);
+      timerProgressCircle.style.strokeDashoffset = dashoffset;
+
+      // Color and visual cue transition in final 10 seconds
+      if (clampedMs <= 10000 && clampedMs > 0 && appState.timer.isRunning) {
+        timerProgressCircle.style.stroke = 'url(#timerWarningGradient)';
+        timerCard.classList.add('timer-warning');
+        timerStatusLabel.textContent = 'FINAL SECONDS!';
+        timerStatusLabel.style.color = '#ef4444';
+      } else if (clampedMs === 0) {
+        timerProgressCircle.style.stroke = '#10b981';
+        timerCard.classList.remove('timer-warning');
+        timerStatusLabel.textContent = 'COMPLETE! 🎉';
+        timerStatusLabel.style.color = '#10b981';
+      } else {
+        timerProgressCircle.style.stroke = 'url(#timerGradient)';
+        timerCard.classList.remove('timer-warning');
+        if (appState.timer.isRunning) {
+          timerStatusLabel.textContent = 'SPEAKING...';
+          timerStatusLabel.style.color = '#f472b6';
+        } else if (appState.timer.isPaused) {
+          timerStatusLabel.textContent = 'PAUSED';
+          timerStatusLabel.style.color = '#f59e0b';
+        } else {
+          timerStatusLabel.textContent = 'READY';
+          timerStatusLabel.style.color = 'var(--text-secondary)';
+        }
+      }
+    }
+
+    function timerLoop(timestamp) {
+      if (!appState.timer.isRunning) return;
+
+      if (!appState.timer.startTimestamp) {
+        appState.timer.startTimestamp = timestamp;
+      }
+
+      const elapsedMs = timestamp - appState.timer.startTimestamp;
+      const remaining = appState.timer.pausedRemainingMs - elapsedMs;
+
+      if (remaining <= 0) {
+        // Countdown finished!
+        appState.timer.remainingMs = 0;
+        appState.timer.isRunning = false;
+        appState.timer.isPaused = false;
+        updateTimerUI(0);
+        playCompletionTone();
+        startTimerBtn.disabled = false;
+        startTimerBtn.textContent = 'Start';
+        pauseTimerBtn.disabled = true;
+        return;
+      }
+
+      appState.timer.remainingMs = remaining;
+      updateTimerUI(remaining);
+
+      appState.timer.rafId = requestAnimationFrame(timerLoop);
+    }
+
+    function startTimer() {
+      // Prevent concurrent intervals/loops
+      if (appState.timer.rafId) {
+        cancelAnimationFrame(appState.timer.rafId);
+        appState.timer.rafId = null;
+      }
+
+      if (appState.timer.remainingMs <= 0) {
+        // If timer was at 0, reset to full duration before starting
+        appState.timer.pausedRemainingMs = appState.timer.durationMs;
+      } else {
+        appState.timer.pausedRemainingMs = appState.timer.remainingMs;
+      }
+
+      appState.timer.isRunning = true;
+      appState.timer.isPaused = false;
+      appState.timer.startTimestamp = null;
+
+      startTimerBtn.disabled = true;
+      pauseTimerBtn.disabled = false;
+      updateTimerUI(appState.timer.pausedRemainingMs);
+
+      appState.timer.rafId = requestAnimationFrame(timerLoop);
+    }
+
+    function pauseTimer() {
+      if (!appState.timer.isRunning) return;
+
+      if (appState.timer.rafId) {
+        cancelAnimationFrame(appState.timer.rafId);
+        appState.timer.rafId = null;
+      }
+
+      appState.timer.isRunning = false;
+      appState.timer.isPaused = true;
+      appState.timer.pausedRemainingMs = appState.timer.remainingMs;
+
+      startTimerBtn.disabled = false;
+      startTimerBtn.textContent = 'Resume';
+      pauseTimerBtn.disabled = true;
+
+      updateTimerUI(appState.timer.remainingMs);
+    }
+
+    function resetTimer() {
+      if (appState.timer.rafId) {
+        cancelAnimationFrame(appState.timer.rafId);
+        appState.timer.rafId = null;
+      }
+
+      appState.timer.isRunning = false;
+      appState.timer.isPaused = false;
+      appState.timer.remainingMs = appState.timer.durationMs;
+      appState.timer.pausedRemainingMs = appState.timer.durationMs;
+      appState.timer.startTimestamp = null;
+
+      startTimerBtn.disabled = false;
+      startTimerBtn.textContent = 'Start';
+      pauseTimerBtn.disabled = true;
+
+      updateTimerUI(appState.timer.durationMs);
+    }
+
+    /* ==========================================================================
+       6. CUSTOM TOPIC PARSER & LOCALSTORAGE MANAGER (STAGE 4)
+       ========================================================================== */
+    const LOCAL_STORAGE_KEY = 'spontaneous_speech_custom_topics';
+
+    function loadCustomTopics() {
+      try {
+        const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) {
+            appState.customTopics = parsed;
+          }
+        }
+      } catch (err) {
+        console.warn("Failed to load custom topics from localStorage:", err);
+        appState.customTopics = [];
+      }
+      updateCategoryCounts();
+      renderCustomTopicsModalList();
+    }
+
+    function saveCustomTopicsToStorage() {
+      try {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(appState.customTopics));
+      } catch (err) {
+        console.warn("Failed to save custom topics to localStorage:", err);
+      }
+      updateCategoryCounts();
+      renderCustomTopicsModalList();
+    }
+
+    /**
+     * Parse raw custom text (CSV, line-separated, or comma-separated)
+     * Supports formats:
+     *   - "Resilience - Bouncing back"
+     *   - "Topic 1, Topic 2, Topic 3"
+     *   - CSV `"Title","Prompt"` or `Title,Prompt`
+     */
+    function parseCustomInput(text) {
+      if (!text || !text.trim()) return [];
+
+      const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+      const newTopics = [];
+      let indexCounter = appState.customTopics.length + 1;
+
+      for (const line of lines) {
+        // Check if line contains a dash separator e.g. "Topic - Description"
+        if (line.includes(' - ')) {
+          const parts = line.split(' - ');
+          const title = parts[0].trim();
+          const prompt = parts.slice(1).join(' - ').trim();
+          if (title) {
+            newTopics.push({
+              id: `custom_${Date.now()}_${indexCounter++}`,
+              categoryId: 'custom',
+              category: 'Custom Practice Topic',
+              title: title,
+              prompt: prompt || 'User-defined custom practice topic.'
+            });
+          }
+          continue;
+        }
+
+        // Check for CSV format with quotes or commas
+        if (line.startsWith('"') && line.includes('","')) {
+          const matches = line.match(/"(.*?)"\s*,\s*"(.*?)"/);
+          if (matches && matches[1]) {
+            newTopics.push({
+              id: `custom_${Date.now()}_${indexCounter++}`,
+              categoryId: 'custom',
+              category: 'Custom Practice Topic',
+              title: matches[1].trim(),
+              prompt: matches[2]?.trim() || 'User-defined custom practice topic.'
+            });
+            continue;
+          }
+        }
+
+        // If multiple commas on one line without quotes, treat as comma-separated list of topics
+        if (line.includes(',') && !line.includes(' - ')) {
+          const tokens = line.split(',').map(t => t.trim()).filter(t => t.length > 0);
+          for (const token of tokens) {
+            newTopics.push({
+              id: `custom_${Date.now()}_${indexCounter++}`,
+              categoryId: 'custom',
+              category: 'Custom Practice Topic',
+              title: token,
+              prompt: 'User-defined custom practice topic.'
+            });
+          }
+          continue;
+        }
+
+        // Default: treat single line as the topic title
+        newTopics.push({
+          id: `custom_${Date.now()}_${indexCounter++}`,
+          categoryId: 'custom',
+          category: 'Custom Practice Topic',
+          title: line,
+          prompt: 'User-defined custom practice topic.'
+        });
+      }
+
+      return newTopics;
+    }
+
+    function renderCustomTopicsModalList() {
+      const container = document.getElementById('customTopicsBadgesContainer');
+      const modalCount = document.getElementById('savedCustomCountModal');
+      const customFilterChip = document.getElementById('customFilterChip');
+
+      modalCount.textContent = appState.customTopics.length;
+
+      if (appState.customTopics.length > 0) {
+        customFilterChip.style.display = 'inline-block';
+      } else {
+        customFilterChip.style.display = 'none';
+        if (appState.currentCategory === 'custom') {
+          setCategoryFilter('all');
+        }
+      }
+
+      if (appState.customTopics.length === 0) {
+        container.innerHTML = '<div style="color: var(--text-muted); font-size: 0.85rem; font-style: italic;">No custom topics saved yet. Paste some above!</div>';
+        return;
+      }
+
+      container.innerHTML = appState.customTopics.map((topic, i) => `
+        <span class="custom-topic-pill">
+          ${escapeHTML(topic.title)}
+          <button class="remove-pill-btn" data-index="${i}" title="Remove this topic">&times;</button>
+        </span>
+      `).join('');
+
+      // Attach deletion handlers for individual pills
+      container.querySelectorAll('.remove-pill-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = parseInt(btn.getAttribute('data-index'), 10);
+          if (!isNaN(idx)) {
+            appState.customTopics.splice(idx, 1);
+            saveCustomTopicsToStorage();
+          }
+        });
+      });
+    }
+
+    function escapeHTML(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    /* ==========================================================================
+       7. AUDIO RECORDER (WEB MEDIARECORDER API) WITH GRACEFUL ERROR HANDLING (STAGE 5)
+       ========================================================================== */
+    const toggleRecordBtn = document.getElementById('toggleRecordBtn');
+    const recordIndicator = document.getElementById('recordIndicator');
+    const recordTimerLabel = document.getElementById('recordTimerLabel');
+    const audioPlayerWrapper = document.getElementById('audioPlayerWrapper');
+    const nativeAudioPlayer = document.getElementById('nativeAudioPlayer');
+    const downloadAudioBtn = document.getElementById('downloadAudioBtn');
+    const recorderAlertBox = document.getElementById('recorderAlertBox');
+
+    function showRecorderAlert(msg) {
+      recorderAlertBox.textContent = msg;
+      recorderAlertBox.style.display = 'block';
+    }
+
+    function hideRecorderAlert() {
+      recorderAlertBox.style.display = 'none';
+      recorderAlertBox.textContent = '';
+    }
+
+    function startRecordingTimer() {
+      appState.recorder.recordStartTimestamp = Date.now();
+      recordIndicator.classList.add('active');
+
+      appState.recorder.recordIntervalId = setInterval(() => {
+        const elapsedSec = Math.floor((Date.now() - appState.recorder.recordStartTimestamp) / 1000);
+        const mins = Math.floor(elapsedSec / 60);
+        const secs = elapsedSec % 60;
+        recordTimerLabel.textContent = `REC ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      }, 1000);
+    }
+
+    function stopRecordingTimer() {
+      if (appState.recorder.recordIntervalId) {
+        clearInterval(appState.recorder.recordIntervalId);
+        appState.recorder.recordIntervalId = null;
+      }
+      recordIndicator.classList.remove('active');
+    }
+
+    async function toggleRecording() {
+      hideRecorderAlert();
+
+      if (appState.recorder.isRecording) {
+        // Stop recording
+        if (appState.recorder.mediaRecorder && appState.recorder.mediaRecorder.state !== 'inactive') {
+          appState.recorder.mediaRecorder.stop();
+        }
+        return;
+      }
+
+      // Check browser support for mediaDevices
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        showRecorderAlert("Microphone access is not supported or blocked in this browser context. You can still practice speaking with the timer!");
+        return;
+      }
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        appState.recorder.stream = stream;
+        appState.recorder.audioChunks = [];
+
+        // Choose supported mime type
+        const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+          ? 'audio/webm;codecs=opus'
+          : MediaRecorder.isTypeSupported('audio/webm')
+            ? 'audio/webm'
+            : '';
+
+        const mediaRecorder = mimeType
+          ? new MediaRecorder(stream, { mimeType })
+          : new MediaRecorder(stream);
+
+        appState.recorder.mediaRecorder = mediaRecorder;
+
+        mediaRecorder.ondataavailable = (e) => {
+          if (e.data && e.data.size > 0) {
+            appState.recorder.audioChunks.push(e.data);
+          }
+        };
+
+        mediaRecorder.onstop = () => {
+          appState.recorder.isRecording = false;
+          stopRecordingTimer();
+          toggleRecordBtn.innerHTML = '<span>● Start Recording</span>';
+          toggleRecordBtn.classList.remove('btn-danger');
+          toggleRecordBtn.classList.add('btn-secondary');
+
+          // Release audio stream tracks
+          if (appState.recorder.stream) {
+            appState.recorder.stream.getTracks().forEach(t => t.stop());
+            appState.recorder.stream = null;
+          }
+
+          // Build Audio Blob and Player URL
+          const blobType = mimeType || 'audio/webm';
+          const audioBlob = new Blob(appState.recorder.audioChunks, { type: blobType });
+          appState.recorder.audioBlob = audioBlob;
+
+          if (appState.recorder.audioUrl) {
+            URL.revokeObjectURL(appState.recorder.audioUrl);
+          }
+          const audioUrl = URL.createObjectURL(audioBlob);
+          appState.recorder.audioUrl = audioUrl;
+
+          nativeAudioPlayer.src = audioUrl;
+          downloadAudioBtn.href = audioUrl;
+          downloadAudioBtn.download = `Articull_${(appState.currentTopic?.title || 'Practice').replace(/[^a-zA-Z0-9]/g, '_')}_${Date.now()}.webm`;
+
+          audioPlayerWrapper.style.display = 'flex';
+        };
+
+        mediaRecorder.start();
+        appState.recorder.isRecording = true;
+        startRecordingTimer();
+
+        toggleRecordBtn.innerHTML = '<span>■ Stop &amp; Save Recording</span>';
+        toggleRecordBtn.classList.remove('btn-secondary');
+        toggleRecordBtn.classList.add('btn-danger');
+
+      } catch (err) {
+        console.warn("Microphone permission denied or unavailable:", err);
+        showRecorderAlert("Microphone permission denied or unavailable. Please enable microphone permissions in your browser settings to record your speech.");
+      }
+    }
+
+    /* ==========================================================================
+       8. SPEECH STRUCTURE FRAMEWORKS UI & SESSION HISTORY (STAGE 6)
+       ========================================================================== */
+    function renderSpeechFramework(index) {
+      const container = document.getElementById('frameworkStepsContainer');
+      const tabs = document.querySelectorAll('#frameworkTabs .framework-tab');
+
+      tabs.forEach((tab, idx) => {
+        if (idx === index) {
+          tab.classList.add('active');
+        } else {
+          tab.classList.remove('active');
+        }
+      });
+
+      const framework = FRAMEWORKS_DATA[index] || FRAMEWORKS_DATA[0];
+      appState.activeFrameworkIndex = index;
+
+      container.innerHTML = framework.steps.map((step, i) => `
+        <div class="framework-step">
+          <div class="step-number">${i + 1}</div>
+          <div class="step-content">
+            <h4>${escapeHTML(step.title)}</h4>
+            <p>${escapeHTML(step.desc)}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addToSessionHistory(topic) {
+      // Avoid duplicate consecutive entry
+      if (appState.history.length > 0 && appState.history[0].id === topic.id) {
+        return;
+      }
+
+      appState.history.unshift(topic);
+      if (appState.history.length > 5) {
+        appState.history = appState.history.slice(0, 5);
+      }
+
+      renderSessionHistory();
+    }
+
+    function renderSessionHistory() {
+      const container = document.getElementById('historyListContainer');
+
+      if (appState.history.length === 0) {
+        container.innerHTML = '<div style="color: var(--text-muted); font-size: 0.88rem; padding: 10px 0;">No topics practiced yet this session. Click "Generate Next Topic" to begin!</div>';
+        return;
+      }
+
+      container.innerHTML = appState.history.map(item => `
+        <div class="history-item" data-id="${item.id}" title="Click to practice this topic again">
+          <div class="history-main">
+            <span class="history-title">${escapeHTML(item.title)}</span>
+            <span class="history-category">${escapeHTML(item.category)}</span>
+          </div>
+          <span class="history-tag">Replay &rarr;</span>
+        </div>
+      `).join('');
+
+      // Add click handler to history items to reload that topic
+      container.querySelectorAll('.history-item').forEach(el => {
+        el.addEventListener('click', () => {
+          const targetId = el.getAttribute('data-id');
+          const found = getActiveTopicList().find(t => t.id === targetId) || DEFAULT_TOPICS.find(t => t.id === targetId) || appState.customTopics.find(t => t.id === targetId);
+          if (found) {
+            selectTopic(found);
+          }
+        });
+      });
+    }
+
+    /* ==========================================================================
+       9. RANDOM TOPIC GENERATOR & CATEGORY FILTERING
+       ========================================================================== */
+    function getActiveTopicList() {
+      if (appState.currentCategory === 'all') {
+        return [...DEFAULT_TOPICS, ...appState.customTopics];
+      }
+      if (appState.currentCategory === 'custom') {
+        return appState.customTopics;
+      }
+      return DEFAULT_TOPICS.filter(t => t.categoryId === appState.currentCategory);
+    }
+
+    function updateCategoryCounts() {
+      document.getElementById('countAll').textContent = DEFAULT_TOPICS.length + appState.customTopics.length;
+      document.getElementById('countAbstract').textContent = DEFAULT_TOPICS.filter(t => t.categoryId === 'abstract').length;
+      document.getElementById('countPsychology').textContent = DEFAULT_TOPICS.filter(t => t.categoryId === 'psychology').length;
+      document.getElementById('countBusiness').textContent = DEFAULT_TOPICS.filter(t => t.categoryId === 'business').length;
+      document.getElementById('countPhilosophy').textContent = DEFAULT_TOPICS.filter(t => t.categoryId === 'philosophy').length;
+      document.getElementById('countCustom').textContent = appState.customTopics.length;
+    }
+
+    function setCategoryFilter(category) {
+      appState.currentCategory = category;
+
+      document.querySelectorAll('#categoryRibbon .chip').forEach(chip => {
+        if (chip.getAttribute('data-category') === category) {
+          chip.classList.add('active');
+        } else {
+          chip.classList.remove('active');
+        }
+      });
+
+      drawNextTopic();
+    }
+
+    function selectTopic(topic) {
+      if (!topic) return;
+      appState.currentTopic = topic;
+
+      document.getElementById('topicTitleDisplay').textContent = topic.title;
+      document.getElementById('topicPromptDisplay').textContent = topic.prompt;
+      document.getElementById('topicCategoryBadge').textContent = topic.category;
+
+      const list = getActiveTopicList();
+      const indexInList = list.findIndex(t => t.id === topic.id);
+      document.getElementById('topicIndexLabel').textContent = `Topic #${indexInList + 1} of ${list.length}`;
+
+      addToSessionHistory(topic);
+
+      // Trigger hero card pulse
+      const heroCard = document.getElementById('heroCard');
+      heroCard.style.borderColor = 'var(--border-highlight)';
+      setTimeout(() => {
+        heroCard.style.borderColor = '';
+      }, 400);
+
+      // Check auto-start toggle
+      if (appState.timer.autoStart) {
+        resetTimer();
+        startTimer();
+      }
+    }
+
+    function drawNextTopic() {
+      const list = getActiveTopicList();
+      if (list.length === 0) {
+        document.getElementById('topicTitleDisplay').textContent = "No Topics Available";
+        document.getElementById('topicPromptDisplay').textContent = "Please select another category or add custom topics.";
+        document.getElementById('topicCategoryBadge').textContent = "Empty Category";
+        document.getElementById('topicIndexLabel').textContent = "0 of 0";
+        return;
+      }
+
+      // Ensure we pick a different topic than current if list has more than 1 item
+      let nextTopic;
+      if (list.length === 1) {
+        nextTopic = list[0];
+      } else {
+        do {
+          const randomIndex = Math.floor(Math.random() * list.length);
+          nextTopic = list[randomIndex];
+        } while (appState.currentTopic && nextTopic.id === appState.currentTopic.id);
+      }
+
+      selectTopic(nextTopic);
+    }
+
+    /* ==========================================================================
+       10. EVENT LISTENERS & DOM INITIALIZATION
+       ========================================================================== */
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize state & load localStorage
+      loadCustomTopics();
+      renderSpeechFramework(0);
+      renderSessionHistory();
+      updateTimerUI(appState.timer.durationMs);
+
+      // Select initial topic randomly
+      drawNextTopic();
+
+      // Category filter buttons
+      document.querySelectorAll('#categoryRibbon .chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          const category = chip.getAttribute('data-category');
+          setCategoryFilter(category);
+        });
+      });
+
+      // Generate Next Topic button
+      document.getElementById('generateTopicBtn').addEventListener('click', () => {
+        drawNextTopic();
+      });
+
+      // Auto-start toggle switch
+      const autoStartSwitch = document.getElementById('autoStartSwitch');
+      autoStartSwitch.addEventListener('change', (e) => {
+        appState.timer.autoStart = e.target.checked;
+      });
+
+      // Timer buttons
+      startTimerBtn.addEventListener('click', startTimer);
+      pauseTimerBtn.addEventListener('click', pauseTimer);
+      resetTimerBtn.addEventListener('click', resetTimer);
+
+      // Speech structure tabs
+      document.querySelectorAll('#frameworkTabs .framework-tab').forEach((tab, idx) => {
+        tab.addEventListener('click', () => {
+          renderSpeechFramework(idx);
+        });
+      });
+
+      // Audio recorder toggle
+      toggleRecordBtn.addEventListener('click', toggleRecording);
+
+      // Custom Topics Modal
+      const modal = document.getElementById('customTopicsModal');
+      document.getElementById('openCustomModalBtn').addEventListener('click', () => {
+        modal.classList.add('active');
+        renderCustomTopicsModalList();
+      });
+      document.getElementById('closeCustomModalBtn').addEventListener('click', () => {
+        modal.classList.remove('active');
+      });
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.remove('active');
+        }
+      });
+
+      // Save custom topics button
+      document.getElementById('saveCustomTopicsBtn').addEventListener('click', () => {
+        const textarea = document.getElementById('customTopicInput');
+        const text = textarea.value.trim();
+        const mode = document.querySelector('input[name="importMode"]:checked').value;
+
+        if (!text) {
+          alert("Please enter or paste at least one custom topic.");
+          return;
+        }
+
+        const parsedTopics = parseCustomInput(text);
+        if (parsedTopics.length === 0) {
+          alert("Could not parse topics from input. Please check formatting.");
+          return;
+        }
+
+        if (mode === 'replace') {
+          appState.customTopics = parsedTopics;
+        } else {
+          appState.customTopics = [...appState.customTopics, ...parsedTopics];
+        }
+
+        saveCustomTopicsToStorage();
+        textarea.value = '';
+
+        // Feedback
+        alert(`Successfully imported ${parsedTopics.length} custom topic(s)!`);
+        modal.classList.remove('active');
+      });
+
+      // Clear textarea button
+      document.getElementById('clearInputBtn').addEventListener('click', () => {
+        document.getElementById('customTopicInput').value = '';
+      });
+
+      // Remove all custom topics button
+      document.getElementById('removeAllCustomBtn').addEventListener('click', () => {
+        if (appState.customTopics.length === 0) return;
+        if (confirm("Are you sure you want to remove all saved custom topics? This cannot be undone.")) {
+          appState.customTopics = [];
+          saveCustomTopicsToStorage();
+        }
+      });
+
+      // Keyboard shortcuts for quick practice workflow
+      document.addEventListener('keydown', (e) => {
+        // Spacebar to toggle timer when focus is not in textarea
+        if (e.code === 'Space' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'INPUT') {
+          e.preventDefault();
+          if (appState.timer.isRunning) {
+            pauseTimer();
+          } else {
+            startTimer();
+          }
+        }
+        // Right Arrow to draw next topic
+        if (e.code === 'ArrowRight' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'INPUT') {
+          drawNextTopic();
+        }
+      });
+
+      console.log("Articull fully initialized and ready! Total Default Topics:", DEFAULT_TOPICS.length);
+    });
+  </script>
+</body>
+</html>
